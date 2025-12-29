@@ -1,0 +1,5 @@
+{
+  "name": "Blueprint Blogs",
+  "description": "A minimalist, engineering-inspired blog engine. Clean blueprint aesthetics, bilingual support (EN/ZH), and fully JSON-configurable.",
+  "requestFramePermissions": []
+}

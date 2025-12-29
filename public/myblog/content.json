@@ -1,0 +1,48 @@
+{
+  "__README__": "Blueprint Blog Engine - Personalization Configuration. Edit these values to customize your site.",
+  
+  "personalInfo": {
+    "name": "Leo Wang",
+    "initials": "LW",
+    "email": "leowang@blueberryowo.me",
+    "githubUrl": "https://github.com/LeoWang0814",
+    "githubUsername": "LeoWang0814",
+    "websiteUrl": "https://blueberryowo.me",
+    "profilePictureUrl": "https://www.helloimg.com/i/2025/12/28/695137b020f5b.jpg",
+    "siteSubtitle": "Blogs Archive",
+    "footerDescription": "Systematic documentation of projects, tools, and engineering thinking — built to be practical and reusable."
+  },
+
+  "home": {
+    "heroBadge": "BUILD • LEARN • DEPLOY",
+    "heroTitleLine1": "Engineering",
+    "heroTitleLine2": "PROJECTS & NOTES.",
+    "heroSubtitle": "Documenting my projects, problem-solving journeys, and underlying reflections: turning creative visions into practical, scalable reality.",
+    "recentLogsTitle": "Recent Logs",
+    "contactDescription": "If you have any questions about my articles or wish to collaborate on research topics, feel free to reach out via email."
+  },
+
+  "archive": {
+    "badge": "Resource Library",
+    "title": "The Archive.",
+    "description": "Documenting projects, problem-solving, and reflections along the way—together with you, turning creative visions into tangible reality."
+  },
+
+  "about": {
+    "badge": "about me",
+    "titlePrimary": "LEO WANG",
+    "titleSecondary": ".",
+    "subtitle": "Researching projects I am genuinely passionate about, and documenting the journey of transforming curiosity into tangible, impactful results.",
+    "bioTitle": "About Me",
+    "bioParagraphs": [
+      "I am a Grade 11 AP Program student based in Shanghai. It brings me genuine joy if this blog or the projects shared here can be of any help to you.",
+      "On this platform, I dive into topics that truly captivate me, approaching each one with an engineering mindset. I focus not just on the final result, but on the entire process—from initial design and implementation to testing and final deployment.",
+      "This blog serves as both a record of my professional growth and an open engineering notebook.",
+      "Here, you'll find project documentations, tutorials, tools, and reflections—some nascent, but all authentic."
+    ],
+    "quote": "The art of programming is the art of organizing complexity.",
+    "quoteAuthor": "Edsger W. Dijkstra",
+    "ctaTitle": "Feel free to contact me.",
+    "ctaDescription": "I'm open to conversations, ideas, and potential collaborations that are technically interesting."
+  }
+}
