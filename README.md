@@ -1,7 +1,5 @@
 # 📐 Blueprint Blogs
 
-[English](#-blueprint-blogs) | [中文](#-blueprint-blogs-zh)
-
 **The documentation-first blog engine for technical minds.**  
 **为技术极客打造的文档优先型博客引擎。**
 
@@ -12,8 +10,6 @@
 - **Blueprint UI**: A unique aesthetic inspired by architectural drafts and technical schematics.  
   **蓝图视觉**：灵感源自建筑草图与技术图纸的独特美感。
 - **Bilingual Core**: Seamlessly switch between English and Chinese with independent content rendering.  
-  **双语内核**：支持中英双语一键切换，内容独立解析，互不干扰。
-- **Zero-Code Config**: Manage your entire identity (Avatar, Bio, Socials) via a single JSON file.  
   **零代码配置**：通过 JSON 文件管理头像、简介、社交链接等所有个人信息。
 - **Pro Markdown**: Syntax highlighting, footnotes, image zooming, and clean typography out of the box.  
   **专业级渲染**：内置代码高亮、脚注、图片灯箱及优雅的排版。
@@ -31,8 +27,7 @@ public/myblog/
 ├── content.json      # Personal Info & UI Text (个人信息与 UI 文本)
 ├── manifest.json     # Article Index & Status (文章索引与状态)
 └── [Category]/       # Markdown Files (分类存放的 MD 文件)
-    ├── post.md       # English Version
-    └── post-zh.md    # Chinese Version
+    └── post.md       # Your post
 ```
 
 ### 2. Configuration / 配置
