@@ -2,77 +2,27 @@
 {
   "status": {
     "building": {
-      "title": "Agentic Workflow Engine",
-      "detail": "Developing a robust framework for LLM-based autonomous agents with complex task decomposition."
+      "title": "A very easy-to-use Markdown editor",
+      "detail": "Developing a plug-and-play Markdown editor that’s as simple and convenient as Word."
     },
     "learning": {
-      "title": "Numerical Analysis",
-      "detail": "Deep diving into finite element methods and high-order discretization for fluid dynamics."
+      "title": "Run YOLOv10 inference in the browser (on a web page)",
+      "detail": "Researching and learning how to efficiently run a YOLOv10 model trained offline on the web."
     },
     "writing": {
-      "title": "The Art of Deployment",
-      "detail": "A comprehensive guide on CI/CD pipelines for distributed edge computing systems."
+      "title": "Detailed tutorial: Deploy your own blog.",
+      "detail": "A detailed tutorial on how to deploy your own beautiful, personalized blog."
     }
   },
   "categories": [
     {
-      "name": "YOLO",
+      "name": "Website",
       "posts": [
         {
-          "filename": "yolo-deployment",
-          "summary": "Step-by-step guide to deploying YOLO models in production environments.",
-          "date": "2025-01-12"
+          "filename": "保姆级教程带你部署属于自己的稳定高速图床",
+          "summary": "一个及其详细的教程：从零开始，手把手带你使用GitHub+Vercel+Cloudflare加速部署图床，确保最快加载速度和最高稳定性。",
+          "date": "2025-12-30"
         },
-        {
-          "filename": "best-way-to-train-yolo-copy",
-          "summary": "Optimization techniques and dataset preparation for superior object detection results.",
-          "date": "2024-12-20"
-        }
-      ]
-    },
-    {
-      "name": "AI",
-      "posts": [
-        {
-          "filename": "why-ai-matters",
-          "summary": "An analysis of artificial intelligence's impact on modern engineering and data science.",
-          "date": "2025-02-05"
-        },
-        {
-          "filename": "My-experience-on-AI-model-copy",
-          "summary": "Personal insights and lessons learned from replicating state-of-the-art AI architectures.",
-          "date": "2024-11-15"
-        }
-      ]
-    },
-    {
-      "name": "Python",
-      "posts": [
-        {
-          "filename": "5-top-libs",
-          "summary": "A curated list of the most powerful Python libraries for scientific computing and automation.",
-          "date": "2025-01-28"
-        },
-        {
-          "filename": "why-I-love-python-copy",
-          "summary": "Exploring the elegance and versatility of the Python programming language.",
-          "date": "2024-10-10"
-        }
-      ]
-    },
-    {
-      "name": "CFD",
-      "posts": [
-        {
-          "filename": "the-best-cfd-software",
-          "summary": "Comparing top Computational Fluid Dynamics tools for professional research.",
-          "date": "2024-09-22"
-        },
-        {
-          "filename": "my-favourate-cfd-project-copy",
-          "summary": "A deep dive into a complex fluid simulation project and its results.",
-          "date": "2024-08-30"
-        }
       ]
     }
   ]
