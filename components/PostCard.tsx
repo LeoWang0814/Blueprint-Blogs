@@ -9,12 +9,15 @@ interface PostCardProps {
 }
 
 const PostCard: React.FC<PostCardProps> = ({ post }) => {
+  // Use encoded category and slug to ensure URL reliability with Chinese/spaces
+  const encodedCategory = encodeURIComponent(post.category);
+  const encodedSlug = encodeURIComponent(post.slug);
+  
   return (
     <Link 
-      to={`/post/${post.category}/${post.slug}`}
+      to={`/post/${encodedCategory}/${encodedSlug}`}
       className="glass-card group relative flex flex-col p-8 rounded-3xl h-full border border-slate-200 hover:border-blue-500 hover:shadow-2xl hover:shadow-blue-500/10 transition-all duration-500 bg-white/80 backdrop-blur-sm"
     >
-      {/* Blueprint Accent Corner */}
       <div className="absolute top-0 right-0 w-12 h-12 overflow-hidden pointer-events-none">
         <div className="absolute top-[-24px] right-[-24px] w-12 h-12 border-b border-l border-slate-100 group-hover:border-blue-200 rotate-45 transition-colors"></div>
       </div>

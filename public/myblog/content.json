@@ -1,6 +1,4 @@
 {
-  "__README__": "Blueprint Blog Engine - Personalization Configuration. Edit these values to customize your site.",
-  
   "personalInfo": {
     "name": "Leo Wang",
     "initials": "LW",
@@ -8,11 +6,10 @@
     "githubUrl": "https://github.com/LeoWang0814",
     "githubUsername": "LeoWang0814",
     "websiteUrl": "https://blueberryowo.me",
-    "profilePictureUrl": "https://image-host.blueberryowo.me/profile.jpg",
+    "profilePictureUrl": "https://www.helloimg.com/i/2025/12/28/695137b020f5b.jpg",
     "siteSubtitle": "Blogs Archive",
     "footerDescription": "Systematic documentation of projects, tools, and engineering thinking — built to be practical and reusable."
   },
-
   "home": {
     "heroBadge": "BUILD • LEARN • DEPLOY",
     "heroTitleLine1": "Engineering",
@@ -21,13 +18,11 @@
     "recentLogsTitle": "Recent Logs",
     "contactDescription": "If you have any questions about my articles or wish to collaborate on research topics, feel free to reach out via email."
   },
-
   "archive": {
     "badge": "Resource Library",
     "title": "The Archive.",
     "description": "Documenting projects, problem-solving, and reflections along the way—together with you, turning creative visions into tangible reality."
   },
-
   "about": {
     "badge": "about me",
     "titlePrimary": "LEO WANG",

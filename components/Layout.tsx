@@ -129,9 +129,6 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <p className="text-[9px] text-slate-300 font-medium max-w-2xl mx-auto leading-relaxed">
               All articles and written content are protected by copyright and may not be redistributed without permission.
             </p>
-            <p className="pt-4 text-[10px] font-black uppercase tracking-widest text-slate-900">
-              Deploy your own copy: <a href="https://github.com/LeoWang0814/Blog-Engine" className="text-blue-600 hover:underline">Click Here</a>
-            </p>
           </div>
         </div>
       </footer>

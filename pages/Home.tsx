@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 // @ts-ignore
 import { Link } from 'react-router-dom';
@@ -57,7 +58,6 @@ const Home: React.FC = () => {
             </div>
           </div>
           
-          {/* 头像区域 */}
           <div className="hidden lg:flex lg:col-span-4 justify-end">
              <div className="relative group">
                 <div className="w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-2xl relative z-10 transition-transform duration-500 group-hover:scale-105">
@@ -67,7 +67,6 @@ const Home: React.FC = () => {
                      className="w-full h-full object-cover"
                    />
                 </div>
-                {/* 测绘装饰线 */}
                 <div className="absolute inset-0 border border-blue-500 rounded-full scale-110 opacity-20 group-hover:scale-125 transition-transform duration-700"></div>
                 <div className="absolute top-1/2 left-[-40px] w-20 h-[1px] bg-blue-600/20"></div>
                 <div className="absolute top-1/2 right-[-40px] w-20 h-[1px] bg-blue-600/20"></div>
@@ -76,7 +75,7 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Now Section (Dynamic Cards) */}
+      {/* Operational Status Section */}
       <section className="space-y-10">
         <div className="flex items-center gap-4">
           <div className="w-8 h-8 bg-blue-600 text-white flex items-center justify-center font-black rounded-lg text-xs">NOW</div>
@@ -93,8 +92,12 @@ const Home: React.FC = () => {
             return (
               <div key={item.key} className="bg-white p-8 rounded-[2.5rem] border border-slate-100 shadow-sm space-y-4 hover:border-blue-500/30 transition-all">
                 <p className="text-[9px] font-black text-blue-600 uppercase tracking-[0.3em]">{item.label}</p>
-                <h4 className="text-lg font-black text-slate-900 tracking-tight">{data?.title || 'Loading...'}</h4>
-                <p className="text-xs text-slate-400 font-medium leading-relaxed">{data?.detail || 'Connecting to data source...'}</p>
+                <h4 className="text-lg font-black text-slate-900 tracking-tight">
+                  {loading ? 'Fetching...' : (data?.title || 'Inactive')}
+                </h4>
+                <p className="text-xs text-slate-400 font-medium leading-relaxed">
+                  {loading ? 'Initializing documentation sequence...' : (data?.detail || 'No active project in this sequence.')}
+                </p>
               </div>
             );
           })}
@@ -103,7 +106,6 @@ const Home: React.FC = () => {
 
       {/* Main Grid Section */}
       <section className="grid grid-cols-1 lg:grid-cols-12 gap-20">
-        {/* Latest Content */}
         <div className="lg:col-span-8 space-y-12">
           <div className="flex items-center justify-between border-b border-slate-100 pb-6">
             <h2 className="text-2xl font-black text-slate-900 tracking-tight flex items-center gap-3 uppercase">
@@ -126,7 +128,6 @@ const Home: React.FC = () => {
           )}
         </div>
 
-        {/* Sidebar Controls */}
         <div className="lg:col-span-4 space-y-12">
           <div className="bg-white p-8 rounded-[2rem] border border-slate-100 shadow-sm space-y-8">
             <h3 className="text-[9px] font-black text-slate-900 uppercase tracking-[0.4em] border-l-4 border-blue-600 pl-4">Classifications</h3>
@@ -146,7 +147,6 @@ const Home: React.FC = () => {
 
           <div className="bg-slate-900 p-8 rounded-[2rem] text-white space-y-6 relative overflow-hidden group shadow-2xl shadow-slate-900/20">
             <div className="absolute top-0 right-0 p-6 opacity-20">
-               {/* 邮件图标装饰 */}
                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="animate-pulse">
                  <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                  <rect width="20" height="16" x="2" y="4" rx="2"></rect>

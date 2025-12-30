@@ -1,4 +1,3 @@
-
 {
   "status": {
     "building": {
@@ -19,10 +18,11 @@
       "name": "Website",
       "posts": [
         {
-          "filename": "Deploy-your-own-image-host",
+          "id": "iSvDaRwO",
+          "title": "保姆级教程带你部署属于自己的稳定高速图床",
           "summary": "一个及其详细的教程：从零开始，手把手带你使用GitHub+Vercel+Cloudflare加速部署图床，确保最快加载速度和最高稳定性。",
-          "date": "2025-12-30"
-        },
+          "date": "2025/12/30"
+        }
       ]
     }
   ]

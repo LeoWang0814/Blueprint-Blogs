@@ -1,9 +1,9 @@
 
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 // @ts-ignore
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { fetchPostContent } from '../services/blogService';
-import { Post } from '../types';
+import { fetchPostContent, fetchSiteContent } from '../services/blogService';
+import { Post, SiteContent } from '../types';
 
 interface TocItem {
   id: string;
@@ -18,23 +18,40 @@ interface ZoomState {
   pan: { x: number; y: number };
 }
 
+const BLUEBERRY_PHOTOS = [
+  "https://image-host.blueberryowo.me/72d6ef0b-1ef9-40ad-8a16-d3e157532c0f.jpg",
+  "https://image-host.blueberryowo.me/fd369747-66f5-4d4b-8c55-d2bae984cba0.jpg",
+  "https://image-host.blueberryowo.me/2d0f3c7c-8bd8-4cb2-b5ca-d0f1f2ea4063.jpg",
+  "https://image-host.blueberryowo.me/e3933c10-0a1b-4477-8c88-88b3fa51720b.jpg",
+  "https://image-host.blueberryowo.me/e7991253-7b82-45a9-bf67-14397d1ea6f4.jpg",
+  "https://image-host.blueberryowo.me/cf2c784d-5edc-45fd-9cf6-a8246a4c0439.jpg",
+  "https://image-host.blueberryowo.me/a9d90b56-3aa3-4458-82bd-c5ea471be35a.jpg",
+  "https://image-host.blueberryowo.me/a7915356-091b-4e91-a88c-f166a644f65c.jpg",
+  "https://image-host.blueberryowo.me/1f64ee6b-39df-4035-8b87-217eee2b310e.jpg"
+];
+
 const PostDetail: React.FC = () => {
   const { category, slug } = useParams<{ category: string; slug: string }>();
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [toc, setToc] = useState<TocItem[]>([]);
-  const contentRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate();
-
-  // Zoom State
+  const [siteContent, setSiteContent] = useState<SiteContent | null>(null);
+  
   const [zoomedImage, setZoomedImage] = useState<ZoomState | null>(null);
   const [isClosing, setIsClosing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef({ x: 0, y: 0 });
   const hasDraggedRef = useRef(false);
 
-  // Smooth scroll logic for TOC
+  const contentRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  // Randomly select a cat photo for this session
+  const blueberryPhoto = useMemo(() => {
+    return BLUEBERRY_PHOTOS[Math.floor(Math.random() * BLUEBERRY_PHOTOS.length)];
+  }, [slug]);
+
   const performSmoothScroll = (targetId: string) => {
     const element = document.getElementById(targetId);
     if (!element) return;
@@ -46,7 +63,6 @@ const PostDetail: React.FC = () => {
     }, 2000);
   };
 
-  // Lock body scroll when zoom is active
   useEffect(() => {
     if (zoomedImage) {
       document.body.style.overflow = 'hidden';
@@ -65,6 +81,7 @@ const PostDetail: React.FC = () => {
         setPost(data);
         setLoading(false);
       });
+      fetchSiteContent().then(setSiteContent);
     }
   }, [category, slug]);
 
@@ -82,11 +99,9 @@ const PostDetail: React.FC = () => {
       const htmlContent = marked.parse(post.content);
       contentRef.current.innerHTML = htmlContent;
       
-      // Syntax Highlighting
       // @ts-ignore
       if (window.Prism) { window.Prism.highlightAllUnder(contentRef.current); }
 
-      // Table of Contents
       const headings = contentRef.current.querySelectorAll('h2, h3');
       const items: TocItem[] = Array.from(headings).map((h: any, idx) => {
         const id = `marker-${idx}`;
@@ -96,7 +111,6 @@ const PostDetail: React.FC = () => {
       setToc(items);
       addCopyButtons(contentRef.current);
 
-      // Setup Image Zoom Listeners
       const imgs = contentRef.current.querySelectorAll('img');
       imgs.forEach(img => {
         img.style.cursor = 'zoom-in';
@@ -114,7 +128,6 @@ const PostDetail: React.FC = () => {
     }
   }, [post, loading]);
 
-  // Prevent whole page zoom when overlay is active (especially for trackpads)
   useEffect(() => {
     const handleOverlayWheel = (e: WheelEvent) => {
       if (zoomedImage) {
@@ -123,7 +136,6 @@ const PostDetail: React.FC = () => {
         setZoomedImage(prev => {
           if (!prev) return null;
           const newScale = Math.min(Math.max(prev.scale + delta, 1), 5);
-          // If returning to scale 1, reset pan
           const newPan = newScale === 1 ? { x: 0, y: 0 } : prev.pan;
           return { ...prev, scale: newScale, pan: newPan };
         });
@@ -195,14 +207,9 @@ const PostDetail: React.FC = () => {
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging || !zoomedImage) return;
-    
     const dx = e.clientX - dragStartRef.current.x;
     const dy = e.clientY - dragStartRef.current.y;
-
-    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) {
-      hasDraggedRef.current = true;
-    }
-
+    if (Math.abs(dx) > 2 || Math.abs(dy) > 2) hasDraggedRef.current = true;
     setZoomedImage({
       ...zoomedImage,
       pan: {
@@ -210,13 +217,12 @@ const PostDetail: React.FC = () => {
         y: zoomedImage.pan.y + dy
       }
     });
-
     dragStartRef.current = { x: e.clientX, y: e.clientY };
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
+  const handleMouseUp = () => setIsDragging(false);
+
+  const isLongToc = toc.length > 15;
 
   if (loading) {
     return (
@@ -262,23 +268,58 @@ const PostDetail: React.FC = () => {
 
           {toc.length > 0 && (
             <div className="p-10 md:p-12 bg-white/60 backdrop-blur-sm rounded-[2.5rem] border border-slate-100 shadow-sm w-full">
-              <div className="flex items-center gap-4 mb-8">
+              <div className="flex items-center gap-4 mb-10">
                 <div className="w-8 h-[2px] bg-blue-600"></div>
                 <h3 className="text-[9px] font-black text-slate-900 tracking-[0.4em] uppercase">Document Map</h3>
               </div>
-              <nav className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-4">
-                {toc.map(item => (
-                  <a 
-                    key={item.id} 
-                    href={`#${item.id}`} 
-                    onClick={(e) => { e.preventDefault(); performSmoothScroll(item.id); }}
-                    className={`text-xs font-bold text-slate-500 hover:text-blue-600 transition-all py-1 flex items-center gap-3 border-b border-transparent hover:border-blue-100 truncate ${item.level === 3 ? 'pl-5 text-[10px] text-slate-400 font-medium' : ''}`}
-                  >
-                    <span className="w-1 h-1 rounded-full bg-blue-600 opacity-30"></span>
-                    <span className="truncate">{item.text}</span>
-                  </a>
-                ))}
-              </nav>
+              
+              <div className={`grid gap-12 ${isLongToc ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-12'}`}>
+                <div className={isLongToc ? 'col-span-1' : 'md:col-span-8'}>
+                  <nav className={`grid gap-x-12 gap-y-3 ${isLongToc ? 'grid-cols-1 md:grid-cols-2' : 'grid-cols-1'}`}>
+                    {toc.map(item => (
+                      <a 
+                        key={item.id} 
+                        href={`#${item.id}`} 
+                        onClick={(e) => { e.preventDefault(); performSmoothScroll(item.id); }}
+                        className={`group text-xs font-bold text-slate-500 hover:text-blue-600 transition-all py-1.5 flex items-center gap-4 border-b border-transparent hover:border-blue-100/50 ${item.level === 3 ? 'pl-8 text-[10px] text-slate-400 font-medium' : 'pl-0'}`}
+                      >
+                        <span className={`w-1.5 h-1.5 rounded-full bg-blue-600/20 group-hover:bg-blue-600 transition-colors shrink-0 ${item.level === 3 ? 'w-1 h-1' : ''}`}></span>
+                        <span className="truncate">{item.text}</span>
+                      </a>
+                    ))}
+                  </nav>
+                </div>
+
+                {!isLongToc && (
+                  <div className="md:col-span-4 flex flex-col justify-center">
+                    <div className="bg-white/40 p-4 rounded-[2rem] border border-slate-100 shadow-sm space-y-4 group">
+                      <div className="relative overflow-hidden rounded-[1.5rem] aspect-[4/5]">
+                        <img 
+                          src={blueberryPhoto} 
+                          alt="Blueberry the Kitten" 
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 cursor-zoom-in"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            setZoomedImage({
+                              src: blueberryPhoto,
+                              rect: rect,
+                              scale: 1,
+                              pan: { x: 0, y: 0 }
+                            });
+                          }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                      </div>
+                      <div className="px-2 pb-1">
+                        <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] text-center">
+                          My Kitten Blueberry
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           )}
 
@@ -306,7 +347,6 @@ const PostDetail: React.FC = () => {
         </article>
       </div>
 
-      {/* Image Zoom Overlay */}
       {zoomedImage && (
         <div 
           ref={overlayRef}
@@ -323,7 +363,6 @@ const PostDetail: React.FC = () => {
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
         >
-          {/* Close Button UI - Enhanced border sharpness */}
           <button 
             className="absolute top-8 right-8 w-10 h-10 flex items-center justify-center bg-slate-900/60 backdrop-blur-md border border-white/50 rounded-xl text-white hover:text-white hover:bg-slate-900 transition-all duration-300 z-[110] shadow-xl"
             onClick={(e) => { e.stopPropagation(); handleCloseZoom(); }}
@@ -333,7 +372,6 @@ const PostDetail: React.FC = () => {
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
-
           <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
             <img 
               src={zoomedImage.src}
