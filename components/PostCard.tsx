@@ -32,7 +32,7 @@ const PostCard: React.FC<PostCardProps> = ({ post }) => {
           </span>
         </div>
         
-        <h3 className="text-2xl font-black text-slate-900 mb-4 group-hover:text-blue-600 transition-colors tracking-tighter leading-tight">
+        <h3 className="text-2xl font-black text-slate-900 mb-4 group-hover:text-blue-600 transition-colors tracking-tight leading-tight">
           {post.title}
         </h3>
         

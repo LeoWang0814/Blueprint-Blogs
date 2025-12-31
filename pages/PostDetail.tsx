@@ -261,7 +261,7 @@ const PostDetail: React.FC = () => {
               <span className="px-2.5 py-1 bg-blue-50 text-blue-600 text-[9px] font-black uppercase rounded-md tracking-widest border border-blue-100">{post.category}</span>
               <span className="text-[9px] font-bold text-slate-300 uppercase tracking-[0.3em] mono">{post.date}</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tighter leading-[1.05] uppercase">
+            <h1 className="text-5xl md:text-7xl font-black text-slate-900 tracking-tight leading-[1.05] uppercase">
               {post.title}
             </h1>
           </header>
