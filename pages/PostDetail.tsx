@@ -40,8 +40,13 @@ const PostDetail: React.FC = () => {
   const [zoomedImage, setZoomedImage] = useState<ZoomState | null>(null);
   const [isClosing, setIsClosing] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  
+  // Refs for tracking interactions
   const dragStartRef = useRef({ x: 0, y: 0 });
   const hasDraggedRef = useRef(false);
+  const initialDistanceRef = useRef<number | null>(null);
+  const initialScaleRef = useRef<number>(1);
+  const lastTouchPosRef = useRef({ x: 0, y: 0 });
 
   const contentRef = useRef<HTMLDivElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
@@ -222,6 +227,83 @@ const PostDetail: React.FC = () => {
 
   const handleMouseUp = () => setIsDragging(false);
 
+  // Touch handlers for iPad/Mobile support - supports simultaneous zoom and pan
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      // Start pinch-to-zoom & two-finger drag
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      const dist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+      initialDistanceRef.current = dist;
+      initialScaleRef.current = zoomedImage?.scale || 1;
+      
+      const midX = (touch1.clientX + touch2.clientX) / 2;
+      const midY = (touch1.clientY + touch2.clientY) / 2;
+      lastTouchPosRef.current = { x: midX, y: midY };
+      
+      hasDraggedRef.current = false;
+      setIsDragging(true); // Enable reactive movement (disable transitions)
+    } else if (e.touches.length === 1) {
+      // Start 1-finger drag
+      lastTouchPosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      setIsDragging(true);
+      hasDraggedRef.current = false;
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!zoomedImage) return;
+
+    if (e.touches.length === 2 && initialDistanceRef.current !== null) {
+      // Perform pinch-to-zoom AND two-finger drag
+      e.preventDefault();
+      const touch1 = e.touches[0];
+      const touch2 = e.touches[1];
+      
+      // Zoom calculation
+      const dist = Math.hypot(touch1.clientX - touch2.clientX, touch1.clientY - touch2.clientY);
+      const ratio = dist / initialDistanceRef.current;
+      const newScale = Math.min(Math.max(initialScaleRef.current * ratio, 1), 5);
+      
+      // Drag calculation (midpoint movement)
+      const midX = (touch1.clientX + touch2.clientX) / 2;
+      const midY = (touch1.clientY + touch2.clientY) / 2;
+      const dx = midX - lastTouchPosRef.current.x;
+      const dy = midY - lastTouchPosRef.current.y;
+      
+      if (Math.abs(dx) > 1 || Math.abs(dy) > 1 || Math.abs(newScale - zoomedImage.scale) > 0.001) {
+          hasDraggedRef.current = true;
+      }
+
+      setZoomedImage(prev => prev ? { 
+        ...prev, 
+        scale: newScale, 
+        pan: newScale === 1 ? { x: 0, y: 0 } : { x: prev.pan.x + dx, y: prev.pan.y + dy }
+      } : null);
+      
+      lastTouchPosRef.current = { x: midX, y: midY };
+    } else if (e.touches.length === 1 && isDragging && zoomedImage.scale > 1) {
+      // Perform 1-finger pan
+      e.preventDefault();
+      const dx = e.touches[0].clientX - lastTouchPosRef.current.x;
+      const dy = e.touches[0].clientY - lastTouchPosRef.current.y;
+      
+      if (Math.abs(dx) > 1 || Math.abs(dy) > 1) hasDraggedRef.current = true;
+      
+      setZoomedImage(prev => prev ? {
+        ...prev,
+        pan: { x: prev.pan.x + dx, y: prev.pan.y + dy }
+      } : null);
+      
+      lastTouchPosRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+  };
+
+  const handleTouchEnd = () => {
+    initialDistanceRef.current = null;
+    setIsDragging(false);
+  };
+
   const isLongToc = toc.length > 15;
 
   if (loading) {
@@ -362,6 +444,9 @@ const PostDetail: React.FC = () => {
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
           onMouseLeave={handleMouseUp}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           <button 
             className="absolute top-8 right-8 w-10 h-10 flex items-center justify-center bg-slate-900/60 backdrop-blur-md border border-white/50 rounded-xl text-white hover:text-white hover:bg-slate-900 transition-all duration-300 z-[110] shadow-xl"
