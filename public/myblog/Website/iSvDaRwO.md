@@ -104,7 +104,7 @@
 
    ![选择合适的权限](https://image-host.blueberryowo.me/a89d853b-db11-4cf1-af1a-f62a9e6dab2c.png)
    ![修改权限为Read and Write](https://image-host.blueberryowo.me/ea000c4a-df0e-4264-8627-e0a078205714.png)
-   在跳出来的页面里面再点击一次 Generate token。  
+   在跳出来的页面里面再点击一次 Generate token。（图片中有个错误，如果你上面已经修改好了那么应该在content右边显示read and write！！！）  
    ![再次点击Generate token](https://image-host.blueberryowo.me/22e21f20-7894-4714-b007-5706225dd7fd.png)
 
 6. **保存好你的 token！！！** 不要把 token 泄露给别人，也不要弄丢。你离开这个页面之后就无法再看到 token 了，所以请把它保存在一个安全稳定的地方。
@@ -133,7 +133,7 @@
 
    ![跳转到的位置](https://image-host.blueberryowo.me/1606ba25-3b83-4c22-a92c-baee199d1e14.png)
 
-在这里我们需要配置自己的信息，从而让文件可以正常上传。
+在这里我们需要配置自己的信息，从而让文件可以正常上传。请注意，保留最外面的引号只在引号内替换：（以我的用户名举例：从"YOUR-NAME"改成"LeoWang0814"）。
 
 ```
     const GITHUB_TOKEN = "YOUR-GITHUB-TOKEN"; //在这里填写我们之前获得的github token密钥
@@ -237,4 +237,5 @@
 有任何问题欢迎通过邮件联系我：`leowang@blueberryowo.me`
 
 [⬆️ 返回顶部](#top)
+
 
